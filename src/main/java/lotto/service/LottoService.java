@@ -14,10 +14,8 @@ public class LottoService {
     }
 
     public int validateMoney(String rawMoney) {
-        int money = Integer.parseInt(rawMoney);
-        if (money % 1000 != 0) {
-            throw new IllegalArgumentException(ErrorMessage.INVALID_INPUT_MONEY.message);
-        }
+        int money = parseToInt(rawMoney);
+        validateMoneyBy1000(money);
         return money;
     }
 
@@ -33,5 +31,19 @@ public class LottoService {
         }
 
         return lottoList;
+    }
+
+    private int parseToInt(String rawMoney) {
+        try {
+            return Integer.parseInt(rawMoney);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(ErrorMessage.INVALID_INPUT_FORMAT.message);
+        }
+    }
+
+    private void validateMoneyBy1000(int money) {
+        if (money % 1000 != 0) {
+            throw new IllegalArgumentException(ErrorMessage.INVALID_MONEY.message);
+        }
     }
 }
