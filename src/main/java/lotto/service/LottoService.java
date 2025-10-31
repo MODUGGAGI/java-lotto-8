@@ -2,7 +2,6 @@ package lotto.service;
 
 import camp.nextstep.edu.missionutils.Randoms;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import lotto.ErrorMessage;
 import lotto.Lotto;
@@ -23,10 +22,12 @@ public class LottoService {
         List<Lotto> lottoList = new ArrayList<>();
 
         for (int i = 0; i < quantity; i++) {
-            List<Integer> integers = Randoms.pickUniqueNumbersInRange(1, 45, 6);
-            Collections.sort(integers);
+            List<Integer> numbers = Randoms.pickUniqueNumbersInRange(1, 45, 6);
+            List<Integer> sortedNumbers = numbers.stream()
+                    .sorted()
+                    .toList();
 
-            Lotto lotto = new Lotto(integers);
+            Lotto lotto = new Lotto(sortedNumbers);
             lottoList.add(lotto);
         }
 
