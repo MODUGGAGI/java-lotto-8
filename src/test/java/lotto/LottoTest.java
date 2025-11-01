@@ -1,10 +1,12 @@
 package lotto;
 
+import lotto.domain.Lotto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class LottoTest {
@@ -21,5 +23,31 @@ class LottoTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
-    // TODO: 추가 기능 구현에 따른 테스트 코드 작성
+    @DisplayName("정렬되지 않은 리스트가 들어와도 자동 정렬된다.")
+    @Test
+    void 자동_정렬() {
+        Lotto lotto = new Lotto(List.of(5, 1, 9, 33, 2, 4));
+
+        assertThat(lotto.toString()).isEqualTo("[1, 2, 4, 5, 9, 33]");
+    }
+
+    @DisplayName("보너스 번호는 당첨 번호와 중복될 수 없다.")
+    @Test
+    void 보너스_반호_중복_불가() {
+        Lotto lotto = new Lotto(List.of(1, 2, 3, 4, 5, 6));
+
+        assertThatThrownBy(() -> lotto.validateBonusNumber(1))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @DisplayName("당청 번호와 몇개가 일치하는지 확인")
+    @Test
+    void 당청_개수_확인() {
+        Lotto winningLotto = new Lotto(List.of(1, 2, 3, 4, 5, 6));
+        Lotto lotto = new Lotto(List.of(1, 2, 3, 4, 5, 7));
+
+        int matchCount = lotto.countMatchingNumbers(winningLotto);
+
+        assertThat(matchCount).isEqualTo(5);
+    }
 }
