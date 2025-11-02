@@ -5,6 +5,7 @@ import lotto.domain.Rank;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
@@ -61,18 +62,18 @@ class LottoServiceTest {
     @DisplayName("수익률 계산 테스트")
     @Test
     void 수익률_계산_테스트() {
-        // given
-        List<Lotto> lottoList = List.of(
-                new Lotto(List.of(1, 2, 3, 4, 5, 6))
-        );
-        Lotto winningLotto = new Lotto(List.of(1, 2, 3, 7, 8, 9));
+        //given
+        Map<Rank, Integer> result = new EnumMap<>(Rank.class);
+        for (Rank rank : Rank.values()) {
+            result.put(rank, 0);
+        }
+        result.put(Rank.FIFTH, 1);
 
-        // when
-        Map<Rank, Integer> result = lottoService.calculateResult(lottoList, winningLotto, 7);
-        double yields = lottoService.calculateYields(1000, result);
+        //when
+        double yields = lottoService.calculateYields(8000, result);
 
-        // then
-        assertThat(yields).isEqualTo(500.0);
+        //then
+        assertThat(yields).isEqualTo(62.5);
     }
 
 }
