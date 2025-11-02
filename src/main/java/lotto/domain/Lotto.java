@@ -12,9 +12,14 @@ public class Lotto {
     }
 
     private void validate(List<Integer> numbers) {
+        boolean invalidRange = numbers.stream().anyMatch(number -> number < 1 || 45 < number);
+        if (invalidRange) {
+            throw new IllegalArgumentException(ErrorMessage.NUMBER_OUT_OF_RANGE.toString());
+        }
+
         int originalSize = numbers.size();
         if (originalSize != 6) {
-            throw new IllegalArgumentException(ErrorMessage.OUT_OF_RANGE_NUMBER.toString());
+            throw new IllegalArgumentException(ErrorMessage.NUMBER_OUT_OF_SIZE.toString());
         }
 
         int uniqueCount = (int) numbers.stream().distinct().count();
